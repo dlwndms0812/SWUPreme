@@ -17,6 +17,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.PasswordAuthentication;
+
 public class RegisterActivity extends AppCompatActivity {
     private EditText et_id, et_pass, et_passck;
     private Button btn_register,validateButton;
@@ -92,21 +94,38 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                System.out.println("여긴 문제없을텐데 어라 여기도 안되네");
 
                 //editText에 입력되어있는 값을 get(가져온다)해온다
+
+                //이 부분이 문제임!!!
                 String userID=et_id.getText().toString();
                 String userPass=et_pass.getText().toString(); // final String userPass=et_pass.getText().toString();
                 String PassCk=et_passck.getText().toString(); // final String PassCk=et_passck.getText().toString();
+
 
                 Response.Listener<String> responseListener=new Response.Listener<String>() {//volley
                     @Override
                     public void onResponse(String response) {
                         try {
-                            System.out.println("회원가입 테스트");
 
-                            JSONObject jasonObject=new JSONObject(response);//Register2 php에 response
-                            boolean success=jasonObject.getBoolean("success");//Register2 php에 sucess
+                            //JSONObject jasonObject=new JSONObject(response);//Register2 php에 response
+                            //boolean success=jasonObject.getBoolean("success");//Register2 php에 sucess
+                            JSONObject jsonObject=new JSONObject(response);
+                            boolean success=jsonObject.getBoolean("success");
+
+
+
+                            if(success){
+                                Toast.makeText(getApplicationContext(), "진짜", Toast.LENGTH_SHORT).show();
+
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"외않되",Toast.LENGTH_LONG).show();
+                            }
+
+
+
+
                             if(userPass.equals(PassCk)) {
                                 if (success) {//회원등록 성공한 경우
                                     Toast.makeText(getApplicationContext(), "회원 등록 성공", Toast.LENGTH_SHORT).show();
