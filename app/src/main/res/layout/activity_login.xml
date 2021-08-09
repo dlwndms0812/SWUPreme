@@ -61,4 +61,12 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="101dp"
         tools:layout_editor_absoluteY="559dp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btn_google"
+        android:layout_width="0dp"
+        android:layout_height="6dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="208dp"
+        tools:layout_editor_absoluteY="659dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
