@@ -58,15 +58,30 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/kakao_login_medium_narrow"
-        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register"
         tools:layout_editor_absoluteX="101dp"
-        tools:layout_editor_absoluteY="559dp" />
+        tools:layout_editor_absoluteY="559dp"
+        tools:ignore="MissingConstraints" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btn_google"
         android:layout_width="0dp"
-        android:layout_height="6dp"
+        android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@+id/btn_kakao"
+        app:layout_constraintStart_toStartOf="@+id/btn_kakao"
         tools:layout_editor_absoluteX="208dp"
         tools:layout_editor_absoluteY="659dp" />
+
+    <ImageButton
+        android:id="@+id/btn_naver"
+        android:layout_width="43dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/btnG_아이콘원형"
+        app:layout_constraintStart_toStartOf="@+id/btn_google"
+        app:layout_constraintTop_toBottomOf="@+id/btn_google"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

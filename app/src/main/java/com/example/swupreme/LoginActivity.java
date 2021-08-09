@@ -3,6 +3,8 @@ package com.example.swupreme;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.ktx.Firebase;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
+import com.nhn.android.naverlogin.OAuthLogin;
+import com.nhn.android.naverlogin.OAuthLoginHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,8 +45,12 @@ import static android.content.ContentValues.TAG;
 public class LoginActivity extends AppCompatActivity{
     private EditText et_id, et_pass;
     private Button btn_login,btn_register;
-    private ImageButton btn_kakao;
+    private ImageButton btn_kakao,btn_naver;
 
+    //네이버
+    OAuthLogin mOAuthLoginModule;
+    Context mcontext;
+    //구글
     private FirebaseAuth mAuth=null;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN=9001;
@@ -62,8 +70,54 @@ public class LoginActivity extends AppCompatActivity{
         btn_login=findViewById(R.id.btn_login);
         btn_register=findViewById(R.id.btn_register);
         btn_kakao=findViewById(R.id.btn_kakao);
+        btn_naver=findViewById(R.id.btn_naver);
+
+        //네이버
+        mcontext=getApplicationContext();
+        btn_naver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOAuthLoginModule = OAuthLogin.getInstance();
+                mOAuthLoginModule.init(
+                        mcontext
+                        ,getString(R.string.naver_client_id)
+                        ,getString(R.string.naver_client_secret)
+                        ,getString(R.string.naver_client_name)
+                        //,OAUTH_CALLBACK_INTENT
+                        // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
+                );
+                @SuppressLint("HandlerLeak")
+                OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
+                    @Override
+                    public void run(boolean success) {
+                        if (success) {
+                            String accessToken = mOAuthLoginModule.getAccessToken(mcontext);
+                            String refreshToken = mOAuthLoginModule.getRefreshToken(mcontext);
+                            long expiresAt = mOAuthLoginModule.getExpiresAt(mcontext);
+                            String tokenType = mOAuthLoginModule.getTokenType(mcontext);
+
+                            Log.i("LoginData","accessToken : "+ accessToken);
+                            Log.i("LoginData","refreshToken : "+ refreshToken);
+                            Log.i("LoginData","expiresAt : "+ expiresAt);
+                            Log.i("LoginData","tokenType : "+ tokenType);
+
+                        } else {
+                            String errorCode = mOAuthLoginModule
+                                    .getLastErrorCode(mcontext).getCode();
+                            String errorDesc = mOAuthLoginModule.getLastErrorDesc(mcontext);
+                            Toast.makeText(mcontext, "errorCode:" + errorCode
+                                    + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                };
+
+                mOAuthLoginModule.startOauthLoginActivity(LoginActivity.this, mOAuthLoginHandler);
 
 
+            }
+        });
+
+        //구글
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()

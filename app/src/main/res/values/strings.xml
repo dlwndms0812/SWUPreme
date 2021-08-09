@@ -1,3 +1,7 @@
-<resources>
+<>
     <string name="app_name">SWUPreme</string>
+
+    <string name="naver_client_id">6LhR3WbLnMoBaZccOUs7</string>
+    <string name="naver_client_secret">47iyPytzaM</string>
+    <string name="naver_client_name">OWL</string>
 </resources>
