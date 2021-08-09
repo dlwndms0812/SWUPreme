@@ -4,21 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.kakao.sdk.user.UserApiClient;
+import com.kakao.sdk.user.model.Account;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.content.ContentValues.TAG;
+
 public class LoginActivity extends AppCompatActivity{
     private EditText et_id, et_pass;
     private Button btn_login,btn_register;
+    private ImageButton btn_kakao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,8 @@ public class LoginActivity extends AppCompatActivity{
         et_pass=findViewById(R.id.et_pass);
         btn_login=findViewById(R.id.btn_login);
         btn_register=findViewById(R.id.btn_register);
+        btn_kakao=findViewById(R.id.btn_kakao);
+
 
         btn_register.setOnClickListener(new View.OnClickListener() {//회원가입 버튼을 클릭시 수행
             @Override
@@ -79,6 +88,42 @@ public class LoginActivity extends AppCompatActivity{
                 queue.add(loginRequest);
             }
         });
+
+
+
+
+        btn_kakao.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                UserApiClient.getInstance().loginWithKakaoTalk(LoginActivity.this,(oAuthToken, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "로그인 실패", error);
+                    } else if (oAuthToken != null) {
+                        Log.i(TAG, "로그인 성공(토큰) : " + oAuthToken.getAccessToken());
+
+                        UserApiClient.getInstance().me((user, meError) -> {
+                            if (meError != null) {
+                                Log.e(TAG, "사용자 정보 요청 실패", meError);
+                            } else {
+                                System.out.println("로그인 완료");
+                                Log.i(TAG, user.toString());
+                                {
+                                    Log.i(TAG, "사용자 정보 요청 성공" +
+                                            "\n회원번호: "+user.getId() +
+                                            "\n이메일: "+user.getKakaoAccount().getEmail());
+                                }
+                                Account user1 = user.getKakaoAccount();
+                                System.out.println("사용자 계정" + user1);
+                            }
+                            return null;
+                        });
+                    }
+                    return null;
+                });
+
+            }
+        });
+
     }
 
 

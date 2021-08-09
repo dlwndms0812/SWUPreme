@@ -10,18 +10,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SWUPreme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+
+        android:name=".GlobalApplication">
 
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <data
+                    android:host="oauth"
+                    android:scheme="{8a670e86ec1997daaa82ca5c8f08955c}"/>
             </intent-filter>
         </activity>
 
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".LoginActivity"/>
+
+
+        <!-- 카카오 로그인-
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="8a670e86ec1997daaa82ca5c8f08955c"/> -->
     </application>
 
 </manifest>
