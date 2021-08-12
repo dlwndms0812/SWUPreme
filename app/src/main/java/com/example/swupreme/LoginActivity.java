@@ -101,6 +101,10 @@ public class LoginActivity extends AppCompatActivity{
                             Log.i("LoginData","expiresAt : "+ expiresAt);
                             Log.i("LoginData","tokenType : "+ tokenType);
 
+                            //여기가 맞나
+                            Intent intent=new Intent(LoginActivity.this, MypageActivity.class);
+                            startActivity(intent);
+
                         } else {
                             String errorCode = mOAuthLoginModule
                                     .getLastErrorCode(mcontext).getCode();

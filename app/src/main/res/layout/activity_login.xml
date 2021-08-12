@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="아이디"
@@ -79,7 +79,7 @@
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/btnG_아이콘원형"
+        android:src="@drawable/btn_naver"
         app:layout_constraintStart_toStartOf="@+id/btn_google"
         app:layout_constraintTop_toBottomOf="@+id/btn_google"
         tools:ignore="MissingConstraints" />
