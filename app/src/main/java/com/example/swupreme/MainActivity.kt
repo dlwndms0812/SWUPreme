@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        val intent=Intent(this@MainActivity, MypageActivity::class.java)
+        val intent=Intent(this@MainActivity, HomeActivity::class.java)
         startActivity(intent)
 
 
