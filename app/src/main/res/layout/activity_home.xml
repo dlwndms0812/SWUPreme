@@ -73,6 +73,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cb_complete2" />
 
+    <Button
+    android:id="@+id/btn_check"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/cb_complete3"
+    tools:ignore="MissingConstraints"
+    android:text="입력"/>
+    <Button
+        android:id="@+id/btn_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cb_complete3"
+        app:layout_constraintStart_toEndOf="@id/btn_check"
+        tools:ignore="MissingConstraints"
+        android:text="불러오기"/>
 
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_update"
+        app:layout_constraintTop_toBottomOf="@id/cb_complete3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

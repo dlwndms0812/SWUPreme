@@ -1,11 +1,18 @@
 package com.example.swupreme;
 
 import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,12 +28,20 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
 
     private CheckBox mCheckBox, mCheckBox2, mCheckBox3;
     int cnt=0;
+    Button btn_check,btn_update;
+    TextView tv;
+
+    final static String dbName="t3.db";
+    final static int dbVersion=2;
+
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        dbHelper=new DBHelper(this,dbName,null,dbVersion);
 
 
         PieChart mPieChart = (PieChart) findViewById(R.id.tab1_chart_1);
@@ -45,13 +60,20 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
         mCheckBox=findViewById(R.id.cb_complete);
         mCheckBox2=findViewById(R.id.cb_complete2);
         mCheckBox3=findViewById(R.id.cb_complete3);
-
+        btn_check=findViewById(R.id.btn_check);
+        btn_update=findViewById(R.id.btn_update);
+        tv=findViewById(R.id.tv);
 
         mCheckBox.setOnCheckedChangeListener(this);
         mCheckBox2.setOnCheckedChangeListener(this);
         mCheckBox3.setOnCheckedChangeListener(this);
 
+        mCheckBox.setText("살려줘");
 
+
+
+        btn_check.setOnClickListener(this::mOnClick);
+        btn_update.setOnClickListener(this::mOnClick);
     }
 
 
@@ -62,4 +84,39 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
         if(mCheckBox3.isChecked()) cnt+=30;
 
     }
+
+
+    public void mOnClick(View v){
+        SQLiteDatabase db;
+        String sql;
+
+        switch (v.getId()){
+            case R.id.btn_check: {
+                String result=Integer.toString(cnt);
+                db = dbHelper.getWritableDatabase();
+                sql=String.format("INSERT INTO t3 VALUES("+result+");");
+                db.execSQL(sql);
+                break;
+            }
+            case R.id.btn_update:{
+                db=dbHelper.getReadableDatabase();
+                sql="SELECT*FROM t3";
+                Cursor cursor=db.rawQuery(sql,null);
+                if(cursor.getCount()>0){
+                    while(cursor.moveToNext()){
+                        tv.setText(String.format("%s",cursor.getString(0)));
+                    }
+                }
+                else
+                    tv.setText("조회결과가 없습니다.");
+                cursor.close();
+                break;
+            }
+
+
+
+        }dbHelper.close();
+    }
+
+
 }
