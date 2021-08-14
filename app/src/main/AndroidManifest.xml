@@ -28,7 +28,6 @@
 
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".LoginActivity"/>
-        <activity android:name=".MypageActivity"/>
         <activity android:name=".HomeActivity"/>
 
 

@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity{
                             Log.i("LoginData","tokenType : "+ tokenType);
 
                             //여기가 맞나
-                            Intent intent=new Intent(LoginActivity.this, MypageActivity.class);
+                            Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
 
                         } else {
@@ -265,7 +265,7 @@ public class LoginActivity extends AppCompatActivity{
 
     private void updateUI(FirebaseUser user) { //update ui code here
         if (user != null) {
-            Intent intent = new Intent(this, MypageActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();
         }
