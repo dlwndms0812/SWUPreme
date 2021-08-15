@@ -27,7 +27,9 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity  implements CompoundButton.OnCheckedChangeListener {
 
     private CheckBox mCheckBox, mCheckBox2, mCheckBox3;
-    int cnt=0;
+    String str;
+    static int cnt=0;
+    int num=0;
     Button btn_check,btn_update;
     TextView tv;
 
@@ -40,6 +42,9 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+
 
         dbHelper=new DBHelper(this,dbName,null,dbVersion);
 
@@ -70,10 +75,17 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
 
         mCheckBox.setText("살려줘");
 
-
+        //num=Integer.parseInt(str);
 
         btn_check.setOnClickListener(this::mOnClick);
         btn_update.setOnClickListener(this::mOnClick);
+
+        if(cnt>50){
+            mCheckBox.setText("언제다해언제다해");
+        }
+        else if(cnt>80){
+            mCheckBox.setText("하...교수님 살려주세요");
+        }
     }
 
 
@@ -99,12 +111,14 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
                 break;
             }
             case R.id.btn_update:{
+
                 db=dbHelper.getReadableDatabase();
                 sql="SELECT*FROM t3";
                 Cursor cursor=db.rawQuery(sql,null);
                 if(cursor.getCount()>0){
                     while(cursor.moveToNext()){
                         tv.setText(String.format("%s",cursor.getString(0)));
+                        str=cursor.getString(0);
                     }
                 }
                 else
