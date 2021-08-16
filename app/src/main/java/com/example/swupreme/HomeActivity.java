@@ -26,9 +26,11 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity  implements CompoundButton.OnCheckedChangeListener {
 
-    private CheckBox mCheckBox, mCheckBox2, mCheckBox3;
-    String str;
+    private CheckBox mCheckBox, mCheckBox2, mCheckBox3, mCheckBox4, mCheckBox5;
+    String currnet_str, total_str;
+    //cnt는 전역 변수로써 사용자의 자가진단 점수
     static int cnt=0;
+    //num는 그날 그날 점수
     int num=0;
     Button btn_check,btn_update;
     TextView tv;
@@ -44,42 +46,49 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
         setContentView(R.layout.activity_home);
 
 
-
-
         dbHelper=new DBHelper(this,dbName,null,dbVersion);
 
-
+        //파이차트 관리
         PieChart mPieChart = (PieChart) findViewById(R.id.tab1_chart_1);
 
-        mPieChart.addPieSlice(new PieModel("Freetime", 15, Color.parseColor("#FE6DA8")));
-        mPieChart.addPieSlice(new PieModel("Sleep", 25, Color.parseColor("#56B7F1")));
+        mPieChart.addPieSlice(new PieModel("Freetime",num, Color.parseColor("#44C0AA")));
+        mPieChart.addPieSlice(new PieModel("일일 달성률",100-num, Color.parseColor("#C2C2C2")));
 
         mPieChart.startAnimation();
 
         PieChart mPieChart2 = (PieChart) findViewById(R.id.tab1_chart_2);
 
-        mPieChart2.addPieSlice(new PieModel("흑", cnt, Color.parseColor("#FE6DA8")));
-        mPieChart2.addPieSlice(new PieModel("ㅎ흑",100-cnt,Color.parseColor("#CDA67F")));
+        mPieChart2.addPieSlice(new PieModel("갱년기 점수", cnt, Color.parseColor("#44C0AA")));
+        mPieChart2.addPieSlice(new PieModel("갱년기 점수",100-cnt,Color.parseColor("#C2C2C2")));
         mPieChart2.startAnimation();
+
+
+        //xml랑 연결
 
         mCheckBox=findViewById(R.id.cb_complete);
         mCheckBox2=findViewById(R.id.cb_complete2);
         mCheckBox3=findViewById(R.id.cb_complete3);
+        mCheckBox4=findViewById(R.id.cb_complete4);
+        mCheckBox5=findViewById(R.id.cb_complete5);
+
+
         btn_check=findViewById(R.id.btn_check);
         btn_update=findViewById(R.id.btn_update);
         tv=findViewById(R.id.tv);
 
+
+        //버튼들이 클릭될때 처리
         mCheckBox.setOnCheckedChangeListener(this);
         mCheckBox2.setOnCheckedChangeListener(this);
         mCheckBox3.setOnCheckedChangeListener(this);
-
-        mCheckBox.setText("살려줘");
-
-        //num=Integer.parseInt(str);
+        mCheckBox4.setOnCheckedChangeListener(this);
+        mCheckBox5.setOnCheckedChangeListener(this);
 
         btn_check.setOnClickListener(this::mOnClick);
         btn_update.setOnClickListener(this::mOnClick);
 
+
+        //사용자의 자가 진단 점수에 따라 체크박스의 미션 내용들이 달라짐
         if(cnt>50){
             mCheckBox.setText("언제다해언제다해");
         }
@@ -89,11 +98,14 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
     }
 
 
+    //체크박스가 선택될때 처리
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(mCheckBox.isChecked()) cnt+=30;
-        if(mCheckBox2.isChecked()) cnt+=30;
-        if(mCheckBox3.isChecked()) cnt+=30;
+        if(mCheckBox.isChecked()) num+=20;
+        if(mCheckBox2.isChecked()) num+=20;
+        if(mCheckBox3.isChecked()) num+=20;
+        if(mCheckBox4.isChecked()) num+=20;
+        if(mCheckBox5.isChecked()) num+=20;
 
     }
 
@@ -104,26 +116,30 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
 
         switch (v.getId()){
             case R.id.btn_check: {
-                String result=Integer.toString(cnt);
+                //총 현황 데이터 베이스에 입력
+                String result=Integer.toString(num);
                 db = dbHelper.getWritableDatabase();
                 sql=String.format("INSERT INTO t3 VALUES("+result+");");
                 db.execSQL(sql);
                 break;
             }
             case R.id.btn_update:{
-
+                //데이터 베이스에서 현재 불러오기
                 db=dbHelper.getReadableDatabase();
                 sql="SELECT*FROM t3";
                 Cursor cursor=db.rawQuery(sql,null);
                 if(cursor.getCount()>0){
                     while(cursor.moveToNext()){
                         tv.setText(String.format("%s",cursor.getString(0)));
-                        str=cursor.getString(0);
+                        total_str=cursor.getString(0);
                     }
                 }
                 else
                     tv.setText("조회결과가 없습니다.");
                 cursor.close();
+                //이거하면 오류난다...
+                //num=Integer.parseInt(currnet_str);
+                //cnt=Integer.parseInt(total_str);
                 break;
             }
 
