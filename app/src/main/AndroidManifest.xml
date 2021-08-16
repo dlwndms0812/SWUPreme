@@ -29,6 +29,7 @@
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".LoginActivity"/>
         <activity android:name=".HomeActivity"/>
+        <activity android:name=".SettingActivity"/>
 
 
         <!-- 카카오 로그인-

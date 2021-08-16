@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         cnt=90;
 
         //val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        val intent=Intent(this@MainActivity, HomeActivity::class.java)
+        val intent=Intent(this@MainActivity, SettingActivity::class.java)
         startActivity(intent)
 
 
