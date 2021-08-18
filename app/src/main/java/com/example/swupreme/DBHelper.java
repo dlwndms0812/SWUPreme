@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+//SQLite 연결
 public class DBHelper extends SQLiteOpenHelper {
     //result는 전체 점수 day_cnt는 그날그날 점수
     private static final String TABLE_NAME="t3";

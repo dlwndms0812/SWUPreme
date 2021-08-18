@@ -1,6 +1,6 @@
 package com.example.swupreme;
 
-//아이디 중복 체크
+//아이디 중복 체크 서버 연결
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;

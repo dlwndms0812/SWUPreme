@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,24 +22,36 @@ import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.BarModel;
 import org.eazegraph.lib.models.PieModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
-
+//홈화면
 public class HomeActivity extends AppCompatActivity  implements CompoundButton.OnCheckedChangeListener {
 
     private CheckBox mCheckBox, mCheckBox2, mCheckBox3, mCheckBox4, mCheckBox5;
     String currnet_str, total_str;
     //cnt는 전역 변수로써 사용자의 자가진단 점수
     static int cnt=0;
+    int check=cnt;
     //num는 그날 그날 점수
     int num=0;
+    //day는 d-day 설정
+    static int day=1;
     Button btn_check,btn_update;
-    TextView tv;
+    TextView tv, tv_day, tv_date;
+    ImageButton btn_left, btn_right;
 
     final static String dbName="t3.db";
     final static int dbVersion=2;
 
     DBHelper dbHelper;
+
+    //날짜 가져오기
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy.MM.dd");
+    Date mDate;
+    long mNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +64,7 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
         //파이차트 관리
         PieChart mPieChart = (PieChart) findViewById(R.id.tab1_chart_1);
 
-        mPieChart.addPieSlice(new PieModel("Freetime",num, Color.parseColor("#44C0AA")));
+        mPieChart.addPieSlice(new PieModel("일일 달성률",num, Color.parseColor("#44C0AA")));
         mPieChart.addPieSlice(new PieModel("일일 달성률",100-num, Color.parseColor("#C2C2C2")));
 
         mPieChart.startAnimation();
@@ -75,7 +88,14 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
         btn_check=findViewById(R.id.btn_check);
         btn_update=findViewById(R.id.btn_update);
         tv=findViewById(R.id.tv);
+        tv_date=findViewById(R.id.tv_date);
+        tv_day=findViewById(R.id.tv_day);
+        btn_left=findViewById(R.id.img_left);
+        btn_right=findViewById(R.id.img_right);
 
+        //날짜 설정
+        tv_date.setText(getTime());
+        tv_day.setText("DAY "+day);
 
         //버튼들이 클릭될때 처리
         mCheckBox.setOnCheckedChangeListener(this);
@@ -86,15 +106,39 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
 
         btn_check.setOnClickListener(this::mOnClick);
         btn_update.setOnClickListener(this::mOnClick);
-
+        btn_right.setOnClickListener(this::mOnClick);
+        btn_left.setOnClickListener(this::mOnClick);
 
         //사용자의 자가 진단 점수에 따라 체크박스의 미션 내용들이 달라짐
-        if(cnt>50){
-            mCheckBox.setText("언제다해언제다해");
-        }
-        else if(cnt>80){
-            mCheckBox.setText("하...교수님 살려주세요");
-        }
+        //~40: 낮음, 40~70: 보통, 70~:좋음 --> 기준점
+           if(check>300){
+               check=check-200;
+           }
+
+
+            if (check < 40) {
+
+            } else if (check >= 40) {
+
+
+            } else if (check > 70) {
+
+
+            } else if (check > 100) {
+
+
+            } else if (check > 140) {
+                mCheckBox.setText("언제다해언제다해");
+            } else if (check > 170) {
+                mCheckBox.setText("하...교수님 살려주세요");
+            } else if (check > 200) {
+
+            } else if (check > 240) {
+
+            } else if (check > 270) {
+
+            }
+
     }
 
 
@@ -121,6 +165,12 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
                 db = dbHelper.getWritableDatabase();
                 sql=String.format("INSERT INTO t3 VALUES("+result+");");
                 db.execSQL(sql);
+                //효과가 없네..아니지..num을 다시 받아와야지...그러면서 점수를 cnt에 올려놔야지
+                num=Integer.parseInt(result);
+                cnt+=num/10;
+                PieChart mPieChart2 = (PieChart) findViewById(R.id.tab1_chart_1);
+                mPieChart2.addPieSlice(new PieModel("일일 달성률",100-num, Color.parseColor("#44C0AA")));
+                mPieChart2.addPieSlice(new PieModel("일일 달성률",num, Color.parseColor("#C2C2C2")));
                 break;
             }
             case R.id.btn_update:{
@@ -142,10 +192,41 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
                 //cnt=Integer.parseInt(total_str);
                 break;
             }
+            case R.id.img_left:{
+                check=check-100;
+                if(day>=1)
+                    break;
+                else
+                    day--;
+                Calendar cal=Calendar.getInstance();
+                int year=cal.get(Calendar.YEAR);
+                int month=cal.get(Calendar.MONTH);
+                int day=cal.get(Calendar.DAY_OF_MONTH)-1;
+                tv_date.setText(year+"."+month+"."+day);
+                break;
+            }
+            case R.id.img_right:{
+                check=check+100;
+                day++;
+                Calendar cal=Calendar.getInstance();
+                int year=cal.get(Calendar.YEAR);
+                int month=cal.get(Calendar.MONTH);
+                int day=cal.get(Calendar.DAY_OF_MONTH)+1;
+                tv_date.setText(year+"."+month+"."+day);
+                break;
+            }
 
+            //일단 다음 날이 안됨...다음날 버튼을 누르면 버튼도 초기화 하기, 입력을 눌렀을때 그래프 수치가 안뜸....
 
 
         }dbHelper.close();
+    }
+
+
+    private String getTime(){
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        return mFormat.format(mDate);
     }
 
 

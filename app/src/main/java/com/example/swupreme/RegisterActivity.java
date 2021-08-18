@@ -1,8 +1,10 @@
 package com.example.swupreme;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,18 +15,28 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ktx.Firebase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.PasswordAuthentication;
+import java.util.HashMap;
 
+//회원가입 화면
 public class RegisterActivity extends AppCompatActivity {
-    private EditText et_id, et_pass, et_passck;
+    private EditText et_id_1, et_pass_1, et_passck, et_name;
     private Button btn_register,validateButton;
     private AlertDialog dialog;
     private boolean validate=false;
-
+    private FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -32,122 +44,77 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         //아이디 값 찾아주기
-        et_id=findViewById(R.id.et_id);
-        et_pass=findViewById(R.id.et_pass);
-        et_passck=findViewById(R.id.et_passck);
-        validateButton=findViewById(R.id.validateButton);
+        et_id_1 = findViewById(R.id.et_id_1);
+        et_pass_1 = findViewById(R.id.et_pass_1);
+        et_passck = findViewById(R.id.et_passck_1);
+        et_name=findViewById(R.id.et_name);
 
-        validateButton.setOnClickListener(new View.OnClickListener() {//id중복체크
-            @Override
-            public void onClick(View view) {
-                String userID=et_id.getText().toString();
-                if(validate)
-                {
-                    return;
-                }
-                if(userID.equals("")){
-                    AlertDialog.Builder builder=new AlertDialog.Builder( RegisterActivity.this );
-                    dialog=builder.setMessage("아이디는 빈 칸일 수 없습니다")
-                            .setPositiveButton("확인",null)
-                            .create();
-                    dialog.show();
-                    return;
-                }
-                Response.Listener<String> responseListener=new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse=new JSONObject(response);
-                            boolean success=jsonResponse.getBoolean("success");
-                            if(success){
-                                AlertDialog.Builder builder=new AlertDialog.Builder( RegisterActivity.this );
-                                dialog=builder.setMessage("사용할 수 있는 아이디입니다.")
-                                        .setPositiveButton("확인",null)
-                                        .create();
-                                dialog.show();
-                                et_id.setEnabled(false);
-                                validate=true;
-                                validateButton.setText("확인");
-                            }
-                            else{
-                                AlertDialog.Builder builder=new AlertDialog.Builder( RegisterActivity.this );
-                                dialog=builder.setMessage("사용할 수 없는 아이디입니다.")
-                                        .setNegativeButton("확인",null)
-                                        .create();
-                                dialog.show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                ValidateRequest validateRequest=new ValidateRequest(userID,responseListener);
-                RequestQueue queue= Volley.newRequestQueue(RegisterActivity.this);
-                queue.add(validateRequest);
+        btn_register=findViewById(R.id.btn_register_1);
 
-            }
-        });
+        //파이어베이스 접근 설정
+        firebaseAuth= FirebaseAuth.getInstance();
 
-
-        btn_register=findViewById(R.id.btn_register);
+        //가입 버튼을 눌렀을때
         btn_register.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
+                //가입 정보 가져오기
+                final String email=et_id_1.getText().toString().trim();
+                String pwd=et_pass_1.getText().toString().trim();
+                String ch_pwd=et_passck.getText().toString().trim();
 
-                //editText에 입력되어있는 값을 get(가져온다)해온다
+                if(pwd.equals(ch_pwd)){
+                    final ProgressDialog mDialog=new ProgressDialog(RegisterActivity.this);
+                    mDialog.setMessage("가입중입니다.");
+                    mDialog.show();
 
-                //이 부분이 문제임!!!
-                String userID=et_id.getText().toString();
-                String userPass=et_pass.getText().toString(); // final String userPass=et_pass.getText().toString();
-                String PassCk=et_passck.getText().toString(); // final String PassCk=et_passck.getText().toString();
+                    //파이어베이스 신규계정 등록하기
+                    firebaseAuth.createUserWithEmailAndPassword(email,pwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            //가입 성공시
+                            if(task.isSuccessful()) {
+                                mDialog.dismiss();
+
+                                FirebaseUser user = firebaseAuth.getCurrentUser();
+                                String email = user.getEmail();
+                                String uid = user.getUid();
+                                String name = et_name.getText().toString().trim();
+
+                                //해쉬맵 테이블을 파이어베이스 데이터베이스에 저장
+                                HashMap<Object, String> hashMap = new HashMap<>();
+
+                                hashMap.put("uid", uid);
+                                hashMap.put("email", email);
+                                hashMap.put("name", name);
+
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference reference = database.getReference("Users");
+                                reference.child(uid).setValue(hashMap);
 
 
-                Response.Listener<String> responseListener=new Response.Listener<String>() {//volley
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-
-                            //JSONObject jasonObject=new JSONObject(response);//Register2 php에 response
-                            //boolean success=jasonObject.getBoolean("success");//Register2 php에 sucess
-                            JSONObject jsonObject=new JSONObject(response);
-                            boolean success=jsonObject.getBoolean("success");
-
-
-
-                            if(success){
-                                Toast.makeText(getApplicationContext(), "진짜", Toast.LENGTH_SHORT).show();
-
+                                //가입이 이루어져을시 가입 화면을 빠져나감.
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                                Toast.makeText(RegisterActivity.this, "회원가입에 성공하셨습니다.", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"외않되",Toast.LENGTH_LONG).show();
-                            }
-
-
-
-
-                            if(userPass.equals(PassCk)) {
-                                if (success) {//회원등록 성공한 경우
-                                    Toast.makeText(getApplicationContext(), "회원 등록 성공", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                    startActivity(intent);
-                                }
-                            }
-                            else{//회원등록 실패한 경우
-                                Toast.makeText(getApplicationContext(),"회원 등록 실패",Toast.LENGTH_SHORT).show();
+                                mDialog.dismiss();
+                                Toast.makeText(RegisterActivity.this, "이미 존재하는 아이디 입니다.", Toast.LENGTH_SHORT).show();
                                 return;
+
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                };
-                //서버로 volley를 이용해서 요청을 함
-                RegisterRequest registerRequest=new RegisterRequest(userID,userPass, responseListener);
-                RequestQueue queue= Volley.newRequestQueue(RegisterActivity.this);
-                queue.add(registerRequest);
+                    });
+
+                    //비밀번호 오류 시
+                } else{
+
+                    Toast.makeText(RegisterActivity.this, "비밀번호가 틀렸습니다. 다시 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         });
     }
-
 }

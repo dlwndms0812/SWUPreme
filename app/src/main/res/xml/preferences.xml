@@ -18,6 +18,7 @@
         <PreferenceScreen
             android:title="회원 탈퇴"/>
         <PreferenceScreen
+            android:key="logout"
             android:title="로그아웃"/>
 
     </PreferenceCategory>

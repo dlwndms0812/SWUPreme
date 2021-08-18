@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,19 +43,23 @@ import org.json.JSONObject;
 
 import static android.content.ContentValues.TAG;
 
+//로그인 화면
 public class LoginActivity extends AppCompatActivity{
     private EditText et_id, et_pass;
     private Button btn_login,btn_register;
     private ImageButton btn_kakao,btn_naver;
 
+    String email= new String();
+    String pwd=new String();
     //네이버
-    OAuthLogin mOAuthLoginModule;
-    Context mcontext;
+    static OAuthLogin mOAuthLoginModule;
+    static Context mcontext;
     //구글
     private FirebaseAuth mAuth=null;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN=9001;
     private SignInButton signInButton;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,93 @@ public class LoginActivity extends AppCompatActivity{
         btn_register=findViewById(R.id.btn_register);
         btn_kakao=findViewById(R.id.btn_kakao);
         btn_naver=findViewById(R.id.btn_naver);
+
+        //자체 로그인
+
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                email = et_id.getText().toString();
+                pwd = et_pass.getText().toString();
+
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(LoginActivity.this, "email을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(pwd)){
+                    Toast.makeText(LoginActivity.this, "password를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(LoginActivity.this, email, Toast.LENGTH_SHORT).show();
+
+
+                    firebaseAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                        startActivity(intent);
+
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }
+
+        });
+
+
+
+        /*
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userID=et_id.getText().toString(); //final String userID=et_id.getText().toString();
+                String userPass=et_pass.getText().toString();
+
+
+
+                Response.Listener<String> responseListener=new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            System.out.println("로그인 테스트");
+
+                            JSONObject jasonObject=new JSONObject(response);
+                            boolean success=jasonObject.getBoolean("success");
+                            if (success) {//회원등록 성공한 경우
+                                String userID = jasonObject.getString("userID");
+                                String userPass= jasonObject.getString("userPassword");
+                                Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("log", "User");
+                                intent.putExtra("userID", userID);
+                                startActivity(intent);
+                            }
+
+
+                            else{//회원등록 실패한 경우
+                                Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                                return;
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                LoginRequest loginRequest=new LoginRequest(userID,userPass,responseListener);
+                RequestQueue queue= Volley.newRequestQueue(LoginActivity.this);
+                queue.add(loginRequest);
+
+
+            }
+        });
+*/
+
+
 
         //네이버
         mcontext=getApplicationContext();
@@ -121,6 +213,15 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
+        btn_register.setOnClickListener(new View.OnClickListener() {//회원가입 버튼을 클릭시 수행
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         //구글
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -134,13 +235,8 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
-        btn_register.setOnClickListener(new View.OnClickListener() {//회원가입 버튼을 클릭시 수행
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
+
+        /*
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,7 +278,7 @@ public class LoginActivity extends AppCompatActivity{
                 queue.add(loginRequest);
             }
         });
-
+*/
 
 
 
@@ -270,4 +366,6 @@ public class LoginActivity extends AppCompatActivity{
             finish();
         }
     }
+
+
 }

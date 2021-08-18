@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.kakao.sdk.common.KakaoSdk;
 
+//카카오톡 api 연결
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
 

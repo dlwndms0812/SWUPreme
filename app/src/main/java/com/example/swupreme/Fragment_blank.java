@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+//fragment_blank와 연결하려고 만든 것인데 안쓰는듯..?
 public class Fragment_blank extends Fragment {
     @Nullable
     @Override
