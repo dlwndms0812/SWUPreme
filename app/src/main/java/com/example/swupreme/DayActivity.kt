@@ -1,16 +1,31 @@
 package com.example.swupreme
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import android.media.Ringtone
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.os.Parcelable
+import android.provider.MediaStore
+import android.util.Log
+import android.view.View
+import android.widget.*
+import androidx.versionedparcelable.VersionedParcelize
 import com.example.daycheck.R
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
+import java.time.LocalDate
+import java.util.*
 
 //하루 기록 화면
 class DayActivity : AppCompatActivity() {
-    //private var person: Person? = null
+
     private var mood: String = ""
     private var symptom: String = ""
     private var isExercising: String = ""
@@ -21,10 +36,24 @@ class DayActivity : AppCompatActivity() {
     lateinit var saveBtn: Button
     lateinit var backBtn: Button
 
+    var fname: String = ""
+    var str: String = ""
+
+    lateinit var mood_radio: RadioGroup
     lateinit var exercising_radio: RadioGroup
     lateinit var drink_radio: RadioGroup
     lateinit var smoking_radio: RadioGroup
     lateinit var sleeping_radio: RadioGroup
+    lateinit var mood1: RadioButton
+    lateinit var mood2: RadioButton
+    lateinit var mood3: RadioButton
+    lateinit var mood4: RadioButton
+    lateinit var mood5: RadioButton
+    lateinit var symptom1: CheckBox
+    lateinit var symptom2: CheckBox
+    lateinit var symptom3: CheckBox
+    lateinit var symptom4: CheckBox
+    lateinit var symptom5: CheckBox
     lateinit var ex_zero : RadioButton
     lateinit var ex_30m : RadioButton
     lateinit var ex_1h: RadioButton
@@ -41,12 +70,24 @@ class DayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_day)
 
+        //사용할 id 연결
         saveBtn = findViewById(R.id.save_Btn)
         backBtn = findViewById(R.id.back_Btn)
+        mood_radio = findViewById(R.id.mood_radio)
         exercising_radio = findViewById(R.id.exercising_radio)
         drink_radio = findViewById(R.id.drink_radio)
         smoking_radio = findViewById(R.id.smoking_radio)
         sleeping_radio = findViewById(R.id.sleeping_radio)
+        mood1 = findViewById(R.id.mood1)
+        mood2 = findViewById(R.id.mood2)
+        mood3 = findViewById(R.id.mood3)
+        mood4 = findViewById(R.id.mood4)
+        mood5 = findViewById(R.id.mood5)
+        symptom1 = findViewById(R.id.symptom1)
+        symptom2 = findViewById(R.id.symptom2)
+        symptom3 = findViewById(R.id.symptom3)
+        symptom4 = findViewById(R.id.symptom4)
+        symptom5 = findViewById(R.id.symptom5)
         ex_zero = findViewById(R.id.ex_zero)
         ex_30m = findViewById(R.id.ex_30m)
         ex_1h = findViewById(R.id.ex_1h)
@@ -57,6 +98,20 @@ class DayActivity : AppCompatActivity() {
         sleep_7h = findViewById(R.id.sleep_7h)
         sleep_8h = findViewById(R.id.sleep_8h)
         sleep_9h = findViewById(R.id.sleep_9h)
+
+        //기분 선택
+        mood_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
+            when(checkedId){
+                R.id.mood1 -> mood = "최고에요"
+                R.id.mood2 -> mood = "좋아요"
+                R.id.mood3 -> mood = "보통이에요"
+                R.id.mood4 -> mood = "안좋아요"
+                R.id.mood5 -> mood = "최악이에요"
+            }
+        }
+        //증상 선택
+        symptom1.setOn
+
 
 
         //운동 시간 선택
@@ -70,10 +125,10 @@ class DayActivity : AppCompatActivity() {
             }
         }
         //음주 유무 선택
-        drink_radio.setOnCheckedChangeListener{radioGroup, i->if(i==R.id.drink_true) isDrinked = "유"
+        drink_radio.setOnCheckedChangeListener{radioGroup, i->if(i== R.id.drink_true) isDrinked = "유"
         else isDrinked = "무"}
         //흡연 유무 선택
-        smoking_radio.setOnCheckedChangeListener{radioGroup, i->if(i==R.id.smoking_true) isSmoking = "유"
+        smoking_radio.setOnCheckedChangeListener{radioGroup, i->if(i== R.id.smoking_true) isSmoking = "유"
         else isSmoking = "무"}
         //수면 시간 선택
         sleeping_radio.setOnCheckedChangeListener {radioGroup, checkedId ->
@@ -89,32 +144,25 @@ class DayActivity : AppCompatActivity() {
 
         //저장 버튼을 누르면 데이터 전달
         saveBtn.setOnClickListener {
-            saveData(isExercising,isDrinked,isSmoking,isSleeping)
+            val sharedPreferences = getSharedPreferences("person",0)
+            val editor = sharedPreferences.edit()
+            editor.putString("mood", mood)
+            editor.putString("Exercising", isExercising)
+            editor.putString("Drinking", isDrinked)
+            editor.putString("Smoking", isSmoking)
+            editor.putString("Sleeping", isSleeping)
+            editor.apply()
+
             val intent = Intent(this, MainActivity::class.java)
-            //intent.putExtra("ImageName", imgName)
-            intent.putExtra("exercising", isExercising.toString())
-            intent.putExtra("drinking", isDrinked.toString())
-            intent.putExtra("smoking", isSmoking.toString())
-            intent.putExtra("sleeping", isSleeping.toString())
 
-            //val sf:SharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE)
-            //val editor: SharedPreferences.Editor = sf.edit()
-            //editor.putString("exercising", isExercising.toString())
-            //editor.putString("drinking", isDrinked.toString())
-            //editor.putString("smoking", isSmoking.toString())
-            //editor.putString("sleeping", isSleeping.toString())
-            //editor.commit()
+            //intent.putExtra("Exercising",isExercising)
+            //intent.putExtra("Drinking", isDrinked)
+            //intent.putExtra("Smoking", isSmoking)
+            //intent.putExtra("Sleeping", isSleeping)
 
+            //saveData(fname)
             startActivity(intent)
-            //현재 날짜 불러옴
-            //val cal = Calendar.getInstance()
-            //val year = cal.get(Calendar.Year)
-            //val month = cal.get(Calendar.MONTH) + 1
-            //val day = cal.get(Calendar.DATE)
-            //현재 날짜에 몸 상태 추가
-            //val person = Person(mood, symptom ,excerciseTime, isDrinked,
-            //isSmoking, sleepTime, year, month, day)
-            //personViewModel.addPerson(person)
+
         }
 
         //취소 버튼을 누르면 전으로 이동
@@ -124,18 +172,19 @@ class DayActivity : AppCompatActivity() {
         }
 
     }
-    fun saveData(excerciseTime:String, isDrinked:String, isSmoking: String, sleepTime:String){
-        val pref = this.getPreferences(0)
-        val editor = pref.edit()
+    @SuppressLint("WrongConstant")
+    fun saveData(personBody: String){
 
-        editor.putString("KEY_EXERCISE",excerciseTime)
-        editor.putString("KEY_DRINK", isDrinked)
-        editor.putString("KEY_SMOKING", isSmoking)
-        editor.putString("KEY_SLEEP", sleepTime)
-        editor.commit()
-        editor.apply()
+        try {
+            var fos: FileOutputStream = openFileOutput(personBody, MODE_PRIVATE)
+            var content: String = isExercising + isDrinked + isSmoking + isSleeping
+            fos.write(content.toByteArray())
+            fos.close()
 
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
+
+
 }
