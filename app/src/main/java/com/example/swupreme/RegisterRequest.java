@@ -6,6 +6,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+//회원가입 서버 연결
 public class RegisterRequest extends StringRequest {
     //서버 url 설정(php파일 연동)
     final static  private String URL="http://dlwndms0812.dothome.co.kr/Register2.php";
