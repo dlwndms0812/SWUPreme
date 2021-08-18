@@ -50,7 +50,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 //하루 기록 화면
-class DayActivity : AppCompatActivity() {
+class CalActivity : AppCompatActivity() {
 
     private var mood: String = ""
     private var symptom: String = ""

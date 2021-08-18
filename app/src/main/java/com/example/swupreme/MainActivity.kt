@@ -11,8 +11,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.daycheck.R
 import java.io.FileInputStream
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 //달력 화면
 class MainActivity : AppCompatActivity() {
@@ -32,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_cal)
 
 
         addBtn = findViewById(R.id.add_Btn)
@@ -69,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         //추가 버튼을 누르면 DayActivity로 이동
         addBtn.setOnClickListener {
-            val intent = Intent(this, DayActivity::class.java)
+            val intent = Intent(this, CalActivity::class.java)
             startActivity(intent)
             val date: String = "$year +/+ $month +/+ $dayOfMonth"
             intent.putExtra("date",date)
