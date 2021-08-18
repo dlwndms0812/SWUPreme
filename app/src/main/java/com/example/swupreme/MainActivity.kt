@@ -1,34 +1,18 @@
 package com.example.swupreme
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.daycheck.R
-
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.CalendarView
-import android.widget.EditText
-import android.widget.TextView
-import org.w3c.dom.Text
-import java.io.BufferedReader
-import java.io.File
 import java.io.FileInputStream
-import java.io.FileReader
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 //달력 화면
 class MainActivity : AppCompatActivity() {
@@ -45,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     var fname: String = ""
     var str: String = ""
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -61,19 +46,14 @@ class MainActivity : AppCompatActivity() {
         personsleep = findViewById(R.id.person_sleep)
 
 
-        //추가 버튼을 누르면 DayActivity로 이동
-        addBtn.setOnClickListener {
-            val intent = Intent(this, DayActivity::class.java)
-            startActivity(intent)
-            calendarView.callOnClick()
-        }
-
         //달력 날짜 선택되면 날짜 표시
         calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
             diaryTextView.visibility = View.VISIBLE
             diaryTextView.text = String.format("%d / %d / %d", year, month + 1, dayOfMonth)
 
-            val SharedPreferences = getSharedPreferences("person",0)
+            str = "$year,$month,$dayOfMonth"
+            //val date = LocalDate.now()
+            val SharedPreferences = getSharedPreferences("$str",0)
             personmood.text = SharedPreferences.getString("mood","")
             personsymptom.text = SharedPreferences.getString("symptom","")
             personexercise.text = SharedPreferences.getString("Exercising","")
@@ -81,6 +61,19 @@ class MainActivity : AppCompatActivity() {
             personsmoking.text = SharedPreferences.getString("Smoking", "")
             personsleep.text = SharedPreferences.getString("Sleeping", "")
 
+            //val date: String = "$year +/+ $month +/+ $dayOfMonth"
+            //val intent = Intent(this, MainActivity::class.java)
+            //intent.putExtra("date",date)
+
+        }
+
+        //추가 버튼을 누르면 DayActivity로 이동
+        addBtn.setOnClickListener {
+            val intent = Intent(this, DayActivity::class.java)
+            startActivity(intent)
+            val date: String = "$year +/+ $month +/+ $dayOfMonth"
+            intent.putExtra("date",date)
+            calendarView.callOnClick()
         }
 
 
@@ -105,5 +98,6 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
 
 }

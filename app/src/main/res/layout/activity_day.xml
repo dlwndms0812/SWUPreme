@@ -102,7 +102,7 @@
             android:id="@+id/drink_true"
             android:layout_width="84dp"
             android:layout_height="73dp"
-            android:background="@drawable/radiobutton"
+            android:button="@drawable/radiobutton_off"
             android:text="유" />
 
         <RadioButton
@@ -189,6 +189,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="10dp"
+        android:background="#919090"
+        android:backgroundTint="#FFFFFF"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

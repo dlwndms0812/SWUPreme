@@ -23,6 +23,32 @@ import java.io.FileWriter
 import java.time.LocalDate
 import java.util.*
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import android.media.Ringtone
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.Parcelable
+import android.provider.MediaStore
+import android.util.Log
+import android.view.View
+import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.versionedparcelable.VersionedParcelize
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
+import java.text.DateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
+
 //하루 기록 화면
 class DayActivity : AppCompatActivity() {
 
@@ -66,6 +92,7 @@ class DayActivity : AppCompatActivity() {
     lateinit var sleep_9h: RadioButton
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_day)
@@ -110,10 +137,21 @@ class DayActivity : AppCompatActivity() {
             }
         }
         //증상 선택
-        symptom1.setOn
-
-
-
+        symptom1.setOnClickListener {
+            symptom += "안면홍조 "
+        }
+        symptom2.setOnClickListener {
+            symptom += "근육통 "
+        }
+        symptom3.setOnClickListener {
+            symptom += "불면증 "
+        }
+        symptom4.setOnClickListener {
+            symptom += "식은땀 "
+        }
+        symptom5.setOnClickListener {
+            symptom += "감정기복"
+        }
         //운동 시간 선택
         exercising_radio.setOnCheckedChangeListener{radioGroup, checkedId ->
             when(checkedId){
@@ -125,10 +163,10 @@ class DayActivity : AppCompatActivity() {
             }
         }
         //음주 유무 선택
-        drink_radio.setOnCheckedChangeListener{radioGroup, i->if(i== R.id.drink_true) isDrinked = "유"
+        drink_radio.setOnCheckedChangeListener{radioGroup, i->if(i==R.id.drink_true) isDrinked = "유"
         else isDrinked = "무"}
         //흡연 유무 선택
-        smoking_radio.setOnCheckedChangeListener{radioGroup, i->if(i== R.id.smoking_true) isSmoking = "유"
+        smoking_radio.setOnCheckedChangeListener{radioGroup, i->if(i==R.id.smoking_true) isSmoking = "유"
         else isSmoking = "무"}
         //수면 시간 선택
         sleeping_radio.setOnCheckedChangeListener {radioGroup, checkedId ->
@@ -144,9 +182,11 @@ class DayActivity : AppCompatActivity() {
 
         //저장 버튼을 누르면 데이터 전달
         saveBtn.setOnClickListener {
-            val sharedPreferences = getSharedPreferences("person",0)
+            val date = LocalDate.now()
+            val sharedPreferences = getSharedPreferences("$date",0)
             val editor = sharedPreferences.edit()
             editor.putString("mood", mood)
+            editor.putString("symptom", symptom)
             editor.putString("Exercising", isExercising)
             editor.putString("Drinking", isDrinked)
             editor.putString("Smoking", isSmoking)
@@ -155,12 +195,7 @@ class DayActivity : AppCompatActivity() {
 
             val intent = Intent(this, MainActivity::class.java)
 
-            //intent.putExtra("Exercising",isExercising)
-            //intent.putExtra("Drinking", isDrinked)
-            //intent.putExtra("Smoking", isSmoking)
-            //intent.putExtra("Sleeping", isSleeping)
-
-            //saveData(fname)
+            intent.getStringExtra("date")
             startActivity(intent)
 
         }
