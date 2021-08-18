@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs.kotlin' //새로 추가
+    //id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -32,9 +35,26 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    
+    dataBinding {
+        enabled = true
+    }
+
+    testOptions{
+        unitTests.returnDefaultValues = true
+    }
+
+
+
 }
 
 dependencies {
+    def fragment_version = '1.2.0-rc04'
+    def nav_version = "2.2.0-rc04"
+    def hilt_version="2.31.2-alpha"
+
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.3.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
@@ -50,6 +70,8 @@ dependencies {
     implementation 'com.naver.nid:naveridlogin-android-sdk:4.2.6'
     implementation 'androidx.room:room-runtime:2.2.6'
     implementation 'com.google.firebase:firebase-database:20.0.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
     def android_x_version = "1.0.0"
     implementation "androidx.appcompat:appcompat:$android_x_version"
     implementation "androidx.legacy:legacy-support-core-utils:$android_x_version"
@@ -82,4 +104,27 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
 
     implementation 'com.google.firebase:firebase-auth'
+
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    // https://mvnrepository.com/artifact/androidx.swiperefreshlayout/swiperefreshlayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    //fragment
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    implementation "androidx.fragment:fragment-testing:$fragment_version"
+
+    //hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0-beta01'
+
+    //navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
