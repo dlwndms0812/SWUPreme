@@ -117,25 +117,63 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
 
 
             if (check < 40) {
-
+                mCheckBox.setText("자가 진단하기");
+                mCheckBox2.setText("낮잠 자기");
+                mCheckBox3.setText("밥 3끼 먹기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 30분 하기");
             } else if (check >= 40) {
-
+                mCheckBox.setText("자가 진단하기");
+                mCheckBox2.setText("명상 하기");
+                mCheckBox3.setText("제철 과일 먹기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 30분 하기");
 
             } else if (check > 70) {
-
+                mCheckBox.setText("자가 진단하기");
+                mCheckBox2.setText("긍정적인 생각하기");
+                mCheckBox3.setText("밥 3끼 먹기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 1시간 하기");
 
             } else if (check > 100) {
-
-
+                mCheckBox.setText("손 지압하기");
+                mCheckBox2.setText("독서하기");
+                mCheckBox3.setText("제철 과일 먹기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 30분 하기");
             } else if (check > 140) {
-                mCheckBox.setText("언제다해언제다해");
+                mCheckBox.setText("영화 감상하기");
+                mCheckBox2.setText("명상 하기");
+                mCheckBox3.setText("밥 3끼 먹기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 30분 하기");
             } else if (check > 170) {
-                mCheckBox.setText("하...교수님 살려주세요");
+                mCheckBox.setText("좋아하는 음악듣기");
+                mCheckBox2.setText("낮잠 자기");
+                mCheckBox3.setText("밥 3끼 먹기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 1시간 하기");
             } else if (check > 200) {
+                mCheckBox.setText("자가 진단하기");
+                mCheckBox2.setText("낮잠 자기");
+                mCheckBox3.setText("좋아하는 음식 먹기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 30분 하기");
 
             } else if (check > 240) {
+                mCheckBox.setText("자가 진단하기");
+                mCheckBox2.setText("취미생활 즐기기");
+                mCheckBox3.setText("독서하기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 30분 하기");
 
             } else if (check > 270) {
+                mCheckBox.setText("자가 진단하기");
+                mCheckBox2.setText("좋아하는 음악 듣기");
+                mCheckBox3.setText("명상 하기");
+                mCheckBox4.setText("영양제 챙겨 먹기");
+                mCheckBox5.setText("산책 1시간 하기");
 
             }
 
@@ -202,7 +240,8 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
                 int year=cal.get(Calendar.YEAR);
                 int month=cal.get(Calendar.MONTH);
                 int day=cal.get(Calendar.DAY_OF_MONTH)-1;
-                tv_date.setText(year+"."+month+"."+day);
+                //tv_date.setText(year+"."+month+"."+day);
+                tv_date.setText("2021.08.18");
                 break;
             }
             case R.id.img_right:{
@@ -212,7 +251,8 @@ public class HomeActivity extends AppCompatActivity  implements CompoundButton.O
                 int year=cal.get(Calendar.YEAR);
                 int month=cal.get(Calendar.MONTH);
                 int day=cal.get(Calendar.DAY_OF_MONTH)+1;
-                tv_date.setText(year+"."+month+"."+day);
+                //tv_date.setText(year+"."+month+"."+day);
+                tv_date.setText("2021.08.20");
                 break;
             }
 
