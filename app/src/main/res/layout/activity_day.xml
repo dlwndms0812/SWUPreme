@@ -102,7 +102,7 @@
             android:id="@+id/drink_true"
             android:layout_width="84dp"
             android:layout_height="73dp"
-            android:button="@drawable/radiobutton_off"
+            android:button="@drawable/radiobutton"
             android:text="유" />
 
         <RadioButton
