@@ -9,45 +9,23 @@ import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.example.daycheck.R
+import com.example.swupreme.R
 import java.io.FileInputStream
 import java.time.LocalDate
 import java.time.LocalDateTime
-
-
-
-    
-
-
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.os.Build
-
-import android.os.Bundle
-import android.view.View
-
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.example.swupreme.HomeActivity.cnt
 import kotlinx.android.synthetic.main.activity_main.*
 
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
-import com.example.swupreme.application.BaseApplication
-import com.example.swupreme.R
-import com.example.swupreme.util.Util
+
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 
 class MainActivity : AppCompatActivity() {
-  var fname: String = ""
-    var str: String = ""
+
+
    //달력 화면
 class MainActivity : AppCompatActivity() {
     lateinit var addBtn: Button
@@ -59,8 +37,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var persondrink: TextView
     lateinit var personsmoking: TextView
     lateinit var personsleep: TextView
-  
-  
+
+
+       var fname: String = ""
+       var str: String = ""
+
   private val navController by lazy{
         findNavController(R.id.diagnosisFragment)
     }
@@ -76,8 +57,8 @@ class MainActivity : AppCompatActivity() {
          cnt=90;
 
        
-        //val intent=Intent(this@MainActivity, LoginActivity::class.java)
-        //startActivity(intent)
+        val intent=Intent(this@MainActivity, LoginActivity::class.java)
+        startActivity(intent)
 
 
         addBtn = findViewById(R.id.add_Btn)
@@ -125,6 +106,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun checkedDay(cYear: Int, cMonth: Int, cDay: Int){
+
         fname = "" +cYear + "-" + (cMonth + 1) + "" + "-" + cDay + ".txt"
         var fis: FileInputStream? = null
 
@@ -147,18 +129,15 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-       cnt=90;
 
-        //val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        val intent=Intent(this@MainActivity, LoginActivity::class.java)
-        startActivity(intent)
+
 
 
 
 
     }
 
-}
+
 
 
 

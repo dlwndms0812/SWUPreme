@@ -10,7 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 
 @Module()
-@InstallIn(Activity Component::class)
+@InstallIn(ActivityComponent::class)
 object MainActivityModule {
 
     @Provides
