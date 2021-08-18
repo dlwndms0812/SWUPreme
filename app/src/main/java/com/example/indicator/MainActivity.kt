@@ -1,4 +1,4 @@
-package com.example.indicator
+package com.example.swupreme
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
