@@ -12,7 +12,7 @@
         android:layout_width="344dp"
         android:layout_height="80dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/border_layout"
@@ -24,10 +24,10 @@
         tools:ignore="MissingConstraints">
 
         <TextView
-            android:fontFamily="@font/font1"
             android:id="@+id/tv_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/font1"
             android:text="김슈니님 \n오늘도 아울과 함께 알찬 하루를 보내봅시다! "
             android:textAlignment="viewStart"
             android:textSize="14sp"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,11 +51,11 @@
 
 
         <org.eazegraph.lib.charts.PieChart
-            android:fontFamily="@font/font1"
             android:id="@+id/tab1_chart_1"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:background="@drawable/border_layout"
+            android:fontFamily="@font/font1"
             android:padding="10dp"
             app:egBarWidth="20dp"
             app:egEnableScroll="true"
@@ -67,12 +67,12 @@
             tools:ignore="MissingConstraints" />
 
         <org.eazegraph.lib.charts.PieChart
-            android:fontFamily="@font/font1"
             android:id="@+id/tab1_chart_2"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginStart="12dp"
             android:background="@drawable/border_layout"
+            android:fontFamily="@font/font1"
             android:padding="10dp"
             app:egBarWidth="20dp"
             app:egEnableScroll="true"
@@ -90,7 +90,7 @@
         android:id="@+id/img_left"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/background"
         android:src="@drawable/left_1"
         app:layout_constraintEnd_toStartOf="@+id/tv_date"
@@ -100,11 +100,11 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:fontFamily="@font/font1"
         android:id="@+id/tv_day"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/font1"
         android:text="DAY 7"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -117,7 +117,7 @@
         android:id="@+id/img_right"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/background"
         android:src="@drawable/right"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,33 +126,34 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:fontFamily="@font/font1"
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/font1"
         android:text="2021.08.11"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_day"
         tools:ignore="MissingConstraints" />
 
     <CheckBox
-        android:fontFamily="@font/font1"
         android:id="@+id/cb_complete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:buttonTint="#44C0AA"
+        android:fontFamily="@font/font1"
         android:text="할 일1"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date"
-        app:layout_constraintVertical_bias="0.049" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <CheckBox
         android:fontFamily="@font/font1"
@@ -209,16 +210,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cb_complete4" />
 
-    <Button
-        android:fontFamily="@font/font1"
-        android:id="@+id/btn_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="입력"
-        app:layout_constraintEnd_toStartOf="@+id/btn_update"
-        app:layout_constraintTop_toBottomOf="@id/cb_complete5"
-        tools:ignore="MissingConstraints" />
-
+    <!--
     <Button
         android:fontFamily="@font/font1"
         android:id="@+id/btn_update"
@@ -227,6 +219,21 @@
         android:layout_marginEnd="16dp"
         android:text="불러오기"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cb_complete5"
+        tools:ignore="MissingConstraints" />
+-->
+
+    <Button
+        android:id="@+id/btn_check"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="304dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/gradient"
+        android:fontFamily="@font/font1"
+        android:text="입력"
+        app:layout_constraintEnd_toStartOf="@+id/btn_update"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cb_complete5"
         tools:ignore="MissingConstraints" />
 

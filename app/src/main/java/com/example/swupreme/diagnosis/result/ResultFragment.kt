@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.swupreme.diagnosis.result.ResultFragmentArgs
 import com.example.swupreme.R
 import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.android.synthetic.main.fragment_result.view.*
+import com.example.swupreme.diagnosis.result.ResultFragment
 
 class ResultFragment  : Fragment() {
     private val resultArgs by navArgs<ResultFragmentArgs>()

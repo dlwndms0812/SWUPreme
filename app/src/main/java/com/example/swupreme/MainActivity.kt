@@ -97,8 +97,9 @@ class MainActivity : AppCompatActivity() {
         addBtn.setOnClickListener {
             val intent = Intent(this, DayActivity::class.java)
             startActivity(intent)
-            val date: String = "$year +/+ $month +/+ $dayOfMonth"
-            intent.putExtra("date",date)
+            //이곳이 오류가 나서 일단은 뺐습니다!
+            //val date: String = "$year +/+ $month +/+ $dayOfMonth"
+            //intent.putExtra("date",date)
             calendarView.callOnClick()
         }
 
