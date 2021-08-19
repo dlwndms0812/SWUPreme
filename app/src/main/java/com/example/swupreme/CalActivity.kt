@@ -15,6 +15,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import com.example.daycheck.R
 import java.util.*
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.CalendarView
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import java.util.*
 
 //달력 화면
 class CalActivity : AppCompatActivity() {
@@ -67,21 +80,26 @@ class CalActivity : AppCompatActivity() {
             personsmoking.text = SharedPreferences.getString("Smoking", "-")
             personsleep.text = SharedPreferences.getString("Sleeping", "-")
 
-            //if(personmood.text == "최고에요"){
-            //imageView.setImageResource(R.drawable.mood01);
-            //}
-            //else if(personmood.text == "좋아요"){
-            //imageView.setImageResource(R.drawable.mood02);
-            //}
-            //else if(personmood.text == "보통이에요"){
-            //imageView.setImageResource(R.drawable.mood03);
-            //}
-            //else if(personmood.text == "안좋아요"){
-            //imageView.setImageResource(R.drawable.mood04);
-            //}
-            //else if(personmood.text == "최악이에요"){
-            //imageView.setImageResource(R.drawable.mood05);
-            //}
+            when (personmood.text) {
+                "최고에요" -> {
+                    imageView.setImageResource(R.drawable.mood1_2);
+                }
+                "좋아요" -> {
+                    imageView.setImageResource(R.drawable.mood2_2);
+                }
+                "보통이에요" -> {
+                    imageView.setImageResource(R.drawable.mood3_2);
+                }
+                "안좋아요" -> {
+                    imageView.setImageResource(R.drawable.mood4_2);
+                }
+                "최악이에요" -> {
+                    imageView.setImageResource(R.drawable.mood5_2);
+                }
+                "-" -> {
+                    imageView.setImageResource(R.drawable.radiobutton)
+                }
+            }
         }
 
         //추가 버튼을 누르면 DayActivity로 이동
@@ -111,9 +129,13 @@ class CalActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.ex -> {
-                Intent(this, SettingActivity::class.java)
+                Intent(this, SettingProfileActivity::class.java)
                 startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
+
+
+}
