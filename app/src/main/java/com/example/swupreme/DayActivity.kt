@@ -1,53 +1,27 @@
 package com.example.swupreme
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-import android.media.Ringtone
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Parcelable
-import android.provider.MediaStore
-import android.util.Log
-import android.view.View
-import android.widget.*
-import androidx.versionedparcelable.VersionedParcelize
-import com.example.daycheck.R
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileOutputStream
-import java.io.FileWriter
-import java.time.LocalDate
-import java.util.*
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-import android.media.Ringtone
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
-import android.provider.MediaStore
-import android.util.Log
-import android.view.View
-import android.widget.*
+
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.RadioButton
+import android.widget.RadioGroup
+
 import androidx.annotation.RequiresApi
-import androidx.versionedparcelable.VersionedParcelize
-import java.io.BufferedWriter
-import java.io.File
+
+import kotlinx.android.synthetic.main.activity_main.*
+
+
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.FileOutputStream
-import java.io.FileWriter
-import java.text.DateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
+
+@AndroidEntryPoint
 
 //하루 기록 화면
 class DayActivity : AppCompatActivity() {
