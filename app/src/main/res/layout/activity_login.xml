@@ -12,7 +12,7 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/font1"
         android:text="아이디"
@@ -52,12 +52,12 @@
         app:layout_constraintTop_toBottomOf="@id/tvtv" />
 
     <TextView
-        android:fontFamily="@font/font1"
         android:id="@+id/tv_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/font1"
         android:text="비밀번호"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -85,12 +85,12 @@
 
 
     <Button
-        android:fontFamily="@font/font1"
         android:id="@+id/btn_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/gradient"
+        android:fontFamily="@font/font1"
         android:text="로그인"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="@+id/et_pass"
