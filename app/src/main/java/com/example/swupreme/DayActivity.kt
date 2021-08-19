@@ -1,16 +1,14 @@
 package com.example.swupreme
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.example.daycheck.R
-import java.io.FileOutputStream
 import java.util.*
 
 //하루 기록 화면
-class DayActivity : AppCompatActivity() {
+class DayActivity: AppCompatActivity() {
 
     private var mood: String = ""
     private var symptom: String = ""
@@ -23,8 +21,6 @@ class DayActivity : AppCompatActivity() {
     lateinit var backBtn: Button
     lateinit var dateView: TextView
 
-    var fname: String = ""
-    var str: String = ""
 
     lateinit var mood_radio: RadioGroup
     lateinit var exercising_radio: RadioGroup
